@@ -111,8 +111,8 @@ namespace TestHarnes
                 //string edg = CreateEdge_GetJson();
                 //result = _tgConn.UpsertData(vert, edg);
 
-                string query = "select * from USER where id_card_no == 1168196";
-                result = _tgConn.RunInterpretedQuery(query, "");
+                //string query = "select * from USER where id_card_no == 1168196";
+                //result = _tgConn.RunInterpretedQuery(query, "");
 
 
                 Console.WriteLine(result.ToString());

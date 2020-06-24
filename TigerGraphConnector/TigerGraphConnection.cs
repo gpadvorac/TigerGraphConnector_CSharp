@@ -468,7 +468,7 @@ namespace TigerGraphConnector
         /// <param name="timeout">Maximum duration for successful query execution.</param>
         /// <param name="sizeLimit">Maximum size of response (in bytes).</param>
         /// <returns>Json</returns>
-        public string RunInstalledQuery(string queryName, Dictionary<string, object> parms = null, int timeout = 16000, int sizeLimit = 32000000)
+        public dynamic RunInstalledQuery(string queryName, Dictionary<string, object> parms = null, int timeout = 16000, int sizeLimit = 32000000)
         {
             try
             {
@@ -493,7 +493,7 @@ namespace TigerGraphConnector
         /// <param name="queryText"></param>
         /// <param name="parms">A string of param1=value1&param2=value2 format or a dictionary.</param>
         /// <returns>Json as string</returns>
-        public string RunInterpretedQuery(string queryText, string parms)
+        public dynamic RunInterpretedQuery(string queryText, string parms)
         {
             try
             {
@@ -520,7 +520,7 @@ namespace TigerGraphConnector
         {
             try
             {
-                RestClient client = new RestClient(_restppUrl + "/echo");
+                RestClient client = new RestClient(_restppUrl + "/echo/" + _graphName);
                 client.AddDefaultHeader("Authorization", "Bearer " + _apiToken);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.GET);
