@@ -114,7 +114,7 @@ namespace TestHarnes
                 //string query = "select * from USER where id_card_no == 1168196";
                 //result = _tgConn.RunInterpretedQuery(query, "");
 
-                //Test Comment
+                //Test Comment2
 
                 Console.WriteLine(result.ToString());
                 Debugger.Break();
