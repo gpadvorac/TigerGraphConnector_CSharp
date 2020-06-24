@@ -69,9 +69,22 @@ namespace TestHarnes
                 //result = _tgConn.GetUDT("myTuple");
                 //result = _tgConn.DeleteToken("xxx", false);
                 //result = _tgConn.DeleteToken("6cib7517qv5ri7asec5ec0a2q2343etl", false);
-                //result = TigerGraphConnection.GetNewToken("http://SomeDomain:9000", "vho11f62l307ts0hbn5eh5nu92tb7kkl", 60);
+
+
+                ////* I'm fetching variables here incase I need to use a config for a different source for this test.
+                //string url = ConfigurationManager.AppSettings["URL"];
+                //string secret = ConfigurationManager.AppSettings["Secret"];
+                //result = TigerGraphConnection.GetNewToken(url + ":9000", secret, 2592000);
+                //Debugger.Break();
+
 
                 //result = _tgConn.ExecuteGetQuery("personKnowsWho", "source=274");
+
+
+                Dictionary<string, object> parms = new Dictionary<string, object>();
+                parms.Add("usr", 1);
+                parms.Add("rnd", 1);
+                result = _tgConn.RunInstalledQuery("GetVoterRndEvals", parms);
 
                 //Dictionary<string, object> parms = new Dictionary<string, object>();
                 //parms.Add("source", 274);
@@ -86,8 +99,8 @@ namespace TestHarnes
                 //result = CreateEdge_GetJson();
                 //result = CreateEdge_NoAttributes_GetJson();
 
-                EdgeList edges = GetEdges();
-                result = edges.ToJson(false);
+                //EdgeList edges = GetEdges();
+                //result = edges.ToJson(false);
 
                 //result = Create_VertexTypeItem_GetJson();
                 //result = Create_VertexTypeItem_GetJson_NoAttribute();
@@ -97,6 +110,9 @@ namespace TestHarnes
                 //string vert = Create_VertexTypeItem_GetJson();
                 //string edg = CreateEdge_GetJson();
                 //result = _tgConn.UpsertData(vert, edg);
+
+                string query = "select * from USER where id_card_no == 1168196";
+                result = _tgConn.RunInterpretedQuery(query, "");
 
 
                 Console.WriteLine(result.ToString());
