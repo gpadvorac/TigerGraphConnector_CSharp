@@ -383,6 +383,7 @@ namespace TigerGraphConnector
         #endregion Schema related methods
 
 
+
         #region Query related methods
 
         /// <summary>

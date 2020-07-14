@@ -48,10 +48,4 @@ namespace TigerGraphConnector
 
 
 
-
-
-
-
-
-
 }

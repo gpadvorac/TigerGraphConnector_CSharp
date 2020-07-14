@@ -91,6 +91,7 @@ namespace TestHarnes
                 //vert.Attributes.Add("lastName", "Herk");
                 //list.Add(vert);
 
+
                 //vert = new Vertex();
                 //vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C06";
                 //vert.VertexType = "Voter";

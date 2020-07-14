@@ -375,6 +375,7 @@ namespace TigerGraphConnector
                 throw GetException("DeleteVerticesById", ex);
             }
         }
+
        
     }
 }

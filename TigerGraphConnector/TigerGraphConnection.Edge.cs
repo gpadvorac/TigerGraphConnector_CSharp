@@ -58,6 +58,7 @@ namespace TigerGraphConnector
             }
         }
 
+
         /// <summary>
         /// Return the number of edges.
         /// Uses:
