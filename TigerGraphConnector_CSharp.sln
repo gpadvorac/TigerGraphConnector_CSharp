@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "TestHarness\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TigerGraphConnector", "TigerGraphConnector\TigerGraphConnector.csproj", "{940D434D-EED8-45EF-B750-31BFE719DC37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TigerGraphComponents", "TigerGraphComponents\TigerGraphComponents.csproj", "{6825801A-57FA-4C2D-827F-BB4F2F130CDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{940D434D-EED8-45EF-B750-31BFE719DC37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{940D434D-EED8-45EF-B750-31BFE719DC37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{940D434D-EED8-45EF-B750-31BFE719DC37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6825801A-57FA-4C2D-827F-BB4F2F130CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6825801A-57FA-4C2D-827F-BB4F2F130CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6825801A-57FA-4C2D-827F-BB4F2F130CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6825801A-57FA-4C2D-827F-BB4F2F130CDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

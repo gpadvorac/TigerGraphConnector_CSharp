@@ -40,6 +40,7 @@ namespace TigerGraphConnector
         int _timeout = -1;
         RestClient _initialClient = null;
         IRestResponse _initialResponse = null;
+        bool _useToken = true;
         bool _debug = false;
         static string QT = "\"";
 
@@ -58,6 +59,7 @@ namespace TigerGraphConnector
 
         public TigerGraphConnection(string host, int restppPort, int gsPort, string graphName,
             bool authenticationIsEnabled,
+            bool useToken,
             string tokenSecret,
             string apiToken,
             long tokenExpiration,
@@ -75,6 +77,7 @@ namespace TigerGraphConnector
                 _gsUrl = _host + ":" + _gsPort;
                 _graphName = graphName;
                 _authenticationIsEnabled = authenticationIsEnabled;
+                _useToken = useToken;
                 _secret = tokenSecret;
                 _apiToken = apiToken;
                 _tokenExpiration = tokenExpiration;
@@ -91,11 +94,14 @@ namespace TigerGraphConnector
                     throw new Exception("Graph Name is null.");
                 }
 
-                IsTokenValid();
-                //If token expires with in an hour, refresh it
-                if (_tokenExpiration < DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 3600)
+                if (_useToken)
                 {
-                    RefreshToken();
+                    IsTokenValid();
+                    //If token expires with in an hour, refresh it
+                    if (_tokenExpiration < DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 3600)
+                    {
+                        RefreshToken();
+                    }
                 }
             }
             catch (Exception ex)
@@ -252,23 +258,6 @@ namespace TigerGraphConnector
             }
         }
 
-        /// <summary>
-        /// This may be obloslete as we may have a seperate class for processing attributes
-        /// </summary>
-        /// <param name="attributes"></param>
-        /// <returns></returns>
-        public Dictionary<string, string> UpsertAttributes(Dictionary<string, string> attributes)
-        {
-            try
-            {
-                return null;
-            }
-            catch (Exception ex)
-            {
-                throw GetException("UpsertAttributes", ex);
-            }
-        }
-
         #endregion Private Methods
 
 
@@ -365,64 +354,6 @@ namespace TigerGraphConnector
             }
         }
 
-
-        /// <summary>
-        /// Combines vertices and edges from Json and upserts them.
-        /// 
-        /// IMPORTANT:  It is recomended that you use the Vertex and Edge classes 
-        /// to generate the Json for this method to assure properly formated Json as expected by TigerGraph
-        /// 
-        /// Example vertices Json
-        /// "vertices": {"Person": {"11695341": {"fullName": {"value": "James Dean","op": "+"},"dob": {"value": "200-07-09","op": "+"},"email": {"value": "JD@TG.com","op": "+"},"gender": {"value": "Male","op": "+"},"ethic_group": {"value": "Orange","op": "+"}}}}
-        /// 
-        /// Example edges Json
-        /// "edges": {"Phone": {"15588881022": {"hasPhoneCall": {"PhoneCall": {"15588225488134883643251429541241": {"testAtt_Text": {"value": "TestVal1","op": "+"},"testAtt_INT": {"value": 123456,"op": "+"},"testAtt_UINT": {"value": 654321,"op": "+"}}}}}}}
-        /// 
-        /// Note 1: The above vertices and edges strings are not wrapped with outside curly brackets.  This is so they can be properly joined in the UpsertData method
-        ///         Example: "{" + vertices + "," + edges + "}"
-        ///         
-        /// Note 2: When upserting a vertex with no attributes, we must show an empty array of attributes as shown by the "{}" below:
-        ///         {"vertices": {"Phone": {"1236": {}}}}
-        /// Note 3: "{}" is not needed for edges with no attributes.
-        ///         
-        /// Endpoint:   POST /graph
-        /// Documentation: https://docs.tigergraph.com/dev/restpp-api/built-in-endpoints#get-the-graph-schema-get-gsql-schema
-        /// </summary>
-        /// <param name="vertices">Zero or more vertices as Json</param>
-        /// <param name="edges">Zero or more edges as Json</param>
-        /// <returns></returns>        
-        public dynamic UpsertData(string vertices, string edges)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(vertices) && string.IsNullOrEmpty(edges))
-                {
-                    throw new Exception("No vertices or edges were provided.");
-                }
-
-                string json = "";
-                if (string.IsNullOrEmpty(vertices))
-                {
-                    json = "{" + edges + "}";
-                }
-                else if (string.IsNullOrEmpty(edges))
-                {
-                    json = "{" + vertices + "}";
-                }
-                else
-                {
-                    json = "{" + vertices + "," + edges + "}";
-                }
-                string url = _restppUrl + "/graph/" + _graphName;
-
-                return Post(url, AuthMode.Token, null, json);
-            }
-            catch (Exception ex)
-            {
-                throw GetException("GetUDT", ex);
-            }
-        }
-
         /// <summary>
         /// Upserts data (vertices and edges) from a JSON document or equivalent object structure.
         /// Endpoint:   POST /graph
@@ -430,27 +361,24 @@ namespace TigerGraphConnector
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public dynamic UpsertData(object data)
+        public dynamic UpsertData(string data, string ack = "all", bool new_vertex_only = false, bool vertex_must_exist = false)
         {
+            Dictionary<string, string> Header = new Dictionary<string, string>();
             try
             {
-                string url = _restppUrl + "/graph/" + _graphName;
-                string json;
-                if (!(data is string))
-                {
-                    json = JsonConvert.SerializeObject(data);
-                }
-                else
-                {
-                    json = data as string;
-                }
-                return Post(url, AuthMode.Token, null, json);
+                //Endpoint parameters:
+                string parms = "ack=" + ack + "& new_vertex_only=" + new_vertex_only.ToString() + "& vertex_must_exist=" + new_vertex_only.ToString();
+                string url = _restppUrl + "/graph/" + _graphName + "?" + parms;
+                Header.Add("Accept", "application/json");
+                dynamic responseContent = Post(url, AuthMode.Token, Header, data, "results", false);
+                JArray values = JArray.Parse(JsonConvert.SerializeObject(responseContent));
+                return values;
             }
             catch (Exception ex)
             {
-                throw GetException("GetUDT", ex);
+                throw GetException("UpsertData", ex);
             }
-        }
+        }    
 
         #endregion Schema related methods
 

@@ -177,7 +177,7 @@ namespace TigerGraphConnector
         /// </summary>
         /// <param name="returnBodyOnly">If true - Does not contain the top element:  ' "vertices": { '  (withoug the single quotes)</param>
         /// <returns></returns>
-        public string ToJson(bool returnBodyOnly)
+        public string ToJson(bool returnBodyOnly = false)
         {
             StringBuilder sb = new StringBuilder();
             //sb.Append("\"vertices\": {");

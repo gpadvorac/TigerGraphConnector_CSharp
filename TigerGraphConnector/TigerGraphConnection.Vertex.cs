@@ -163,43 +163,19 @@ namespace TigerGraphConnector
             }
         }
 
-        /// <summary>
-        /// Upserts multiple vertices (of the same type).
-        /// See the description of `upsertVertex` for generic information.
-        /// The `vertices` argument is expected to be a list of tuples in this format:
-        /// [(<vertex_id>, {<attribute_name>, <attribute_value>|(<attribute_name>, <operator>), …}),]
-        /// Example:
-        /// [
-        /// (2, {"name": "Balin", "points": (10, "+"), "bestScore": (67, "max")}),
-        /// (3, {"name": "Dwalin", "points": (7, "+"), "bestScore": (35, "max")})
-        /// ]
-        /// For valid values of <operator> see: https://docs.tigergraph.com/dev/restpp-api/built-in-endpoints#post-graph-graph_name-upsert-the-given-data
-        /// Returns a single number of accepted (successfully upserted) vertices (0 or positive integer).
-        /// Endpoint:      POST /graph
-        /// Documentation: https://docs.tigergraph.com/dev/restpp-api/built-in-endpoints#post-graph-graph_name-upsert-the-given-data
-        /// </summary>
-        /// <param name="vertextType"></param>
-        /// <param name="data">Dictionary or Json to upsert.  This might be converted to a custom class in the future.</param>
-        /// <returns></returns>
-        public dynamic UpsertVertices(string vertextType, string data)
+        public dynamic UpsertVertex(string vertexJaon)
         {
-            Dictionary<string, string> Header = new Dictionary<string, string>();
             try
             {
-                if (string.IsNullOrEmpty(vertextType))
-                {
-                    throw new Exception("Vertex Type is mandatory.");
-                }
-                string url = _restppUrl + "/graph/" + _graphName;
-                Header.Add("Accept", "application/json");
-                var Param = "{\"vertices\": {\"Phone\": " + data + "}}";
-                dynamic responseContent = Post(url, AuthMode.Token, Header, Param, "results", false);
-                JArray values = JArray.Parse(JsonConvert.SerializeObject(responseContent));
-                return values;
+                    string url = _restppUrl + "/graph/" + _graphName;
+                    string data = vertexJaon;
+                    Dictionary<string, string> headers = new Dictionary<string, string>();
+                    headers.Add("Accept", "application/json");
+                    return Post(url, AuthMode.Token, headers, data);
             }
             catch (Exception ex)
             {
-                throw GetException("UpsertVertices", ex);
+                throw GetException("UpsertVertex", ex);
             }
         }
 
@@ -259,7 +235,7 @@ namespace TigerGraphConnector
                 }
 
                 List<object> ids = new List<object>();
-                if (vertexIds is int || vertexIds is long || vertexIds is string)
+                if (vertexIds is int || vertexIds is long || vertexIds is string || vertexIds is Guid)
                 {
                     ids.Add(vertexIds);
                 }

@@ -48,17 +48,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute.cs" />
-    <Compile Include="Edge.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TigerGraphConnection.cs" />
     <Compile Include="TigerGraphConnection.Edge.cs" />
     <Compile Include="TigerGraphConnection.Vertex.cs" />
-    <Compile Include="Vertex.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TigerGraphComponents\TigerGraphComponents.csproj">
+      <Project>{6825801a-57fa-4c2d-827f-bb4f2f130cdd}</Project>
+      <Name>TigerGraphComponents</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y /I  "$(TargetDir)$(TargetName).dll" "$(SolutionDir)Bin\TG\"
+xcopy /Y /I  "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)Bin\TG\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

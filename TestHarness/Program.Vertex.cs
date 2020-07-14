@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TigerGraphComponents;
 
 namespace TestHarnes
 {
@@ -13,7 +14,7 @@ namespace TestHarnes
 
         static void CallVertexMethods()
         {
-            dynamic result;
+            dynamic result = "";
 
             try
             {
@@ -36,38 +37,91 @@ namespace TestHarnes
                 //result = _tgConn.GetVertexCount("*", "", false);
 
                 //Upsert Vertex
+                // ***  Random samples below
                 //string _Variables_JSON = "{ \"callLength\" : { \"value\" : 10, \"op\" : \"add\" } }";
                 //result = _tgConn.UpsertVertex("PhoneCall", "15588225488134883643251429541241", _Variables_JSON);
 
+                //string _Variables_JSON = "{ \"title\" : { \"value\" : \"zzDeleteme\", \"op\" : \"+\" } }";
+                //string _Variables_JSON = "{ \"title\" : { \"value\" : \"zzDeleteme\", \"op\" : \"+\" }, \"fileName\" : { \"value\" : \"zzDeleteme\", \"op\" : \"+\" } }";
+                //string _Variables_JSON = "{ \"title\" : { \"value\" : \"zzDeleteme333\", \"op\" : \"+\" }, \"fileName\" : { \"value\" : \"zzDeleteme333444\"} }";
+                //result = _tgConn.UpsertVertex("ConceptItemContent", "E3605013-5183-43E3-A57E-52D0F7703C03", _Variables_JSON);
 
-                //string json = Create_VertexTypeItem_GetJson_NoAttribute();
                 //string json = "\"vertices\": {\"Phone\": {\"1238\": {}}}";
                 //string json = "\"vertices\": {\"PhoneCall\": {\"1239\": {\"callLength\": {\"value\": 19, \"op\": \"max\"}}}}";
                 //result = _tgConn.UpsertData(json, null);
                 //phoneNumber
 
-                //////Upsert muliplte vertices and vertex types
-                //var vets = GetVertices();
-                //string json = vets.ToJson(false);
-                //result = _tgConn.UpsertData(json, null);
-
-                //string json = "{\"vertices\": {\"Phone\": \"1234\"}}";      // Create_VertexTypeItem_GetJson_Phone();
+                //string json = "{\"vertices\": {\"Phone\": \"1234\"}}"; 
                 //result = _tgConn.UpsertData(null, json);
 
-                var verts = GetVertices();
-                result = verts.ToJson_ByType("Phone", true);
 
-                //Upsert Vertices
+                ////Upsert Vertices
                 //string _Vertices = "{\"50\": {\"phoneNumber\": {\"value\": \"555\"}}, \"51\": {\"phoneNumber\": {\"value\": \"666\"}}}";
-                //result = _tgConn.UpsertVertices("Phone", _Vertices);
+                //result = _tgConn.UpsertData("Phone", _Vertices);
+
+
+                //This is a sample of good Json with 2 attributes (no operators yet)
+                //{"Voter": {"E3605013-5183-43E3-A57E-52D0F7703C03": {"firstName": {"value": "Deleleteme"},"lastName": {"value": "Deleleteme2"}}}}
+                //string json = vert.ToJsonForUpsert();
+                //string json2 =   "{\"Voter\": {\"E3605013-5183-43E3-A57E-52D0F7703C03\": {\"firstName\": {\"value\": \"Deleleteme\"}} }}";
+                ////string json2 = "{\"Voter\": {\"E3605013-5183-43E3-A57E-52D0F7703C03\": {\"firstName\": {\"value\": \"Deleleteme\"},\"lastName\": {\"value\": \"Deleleteme2\"}}}}";
+                //result = _tgConn.UpsertData(json);
+
+                ///Upsert Single vertex using the Vertex class
+                //Vertex vert = new Vertex();
+                //string json;
+                //vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C05";
+                //vert.VertexType = "Voter";
+                //vert.Attributes.Add("firstName", "Jon");
+                //vert.Attributes.Add("lastName", "Herk");
+                //json = vert.ToJsonForSingleVertexUpsert();
+
+                ////json = "{\"vertices\":  {\"Voter\": {\"E3605013-5183-43E3-A57E-52D0F7703C05\":{}}}}";
+
+                //result = _tgConn.UpsertData(json);
+
+
+                //////Upsert a list of vertices
+                //VertexList list = new VertexList();
+                //Vertex vert = new Vertex();
+                //string json;
+                //vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C05";
+                //vert.VertexType = "Voter";
+                //vert.Attributes.Add("firstName", "Jon");
+                //vert.Attributes.Add("lastName", "Herk");
+                //list.Add(vert);
+
+                //vert = new Vertex();
+                //vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C06";
+                //vert.VertexType = "Voter";
+                //vert.Attributes.Add("firstName", "Parker");
+                //vert.Attributes.Add("lastName", "Erickson");
+                //list.Add(vert);
+
+                //json = list.ToJsonForUpsert();
+                ////json = "{\"vertices\": {\"Voter\": {\"E3605013-5183-43E3-A57E-52D0F7703C05\": {\"firstName\": {\"value\": \"Jon\"},\"lastName\": {\"value\": \"Herk\"}},\"E3605013-5183-43E3-A57E-52D0F7703C06\": {\"firstName\": {\"value\": \"Parker\"},\"lastName\": {\"value\": \"Erickson\"}}}}}";
+                //result = _tgConn.UpsertData(json);
 
 
 
-                //string json = Create_VertexTypeItem_GetJson_NoAttribute();
-                //result = _tgConn.UpsertVertex(json);
+                //// Create 2 vertices in prep for an edge upsert.
+                Vertex vert = new Vertex();
+                string json;
+                //vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //vert.VertexType = "EvalEvent";
+                //vert.Attributes.Add("rating", 2);
+                //vert.Attributes.Add("why", "Just because");
+                //json = vert.ToJsonForSingleVertexUpsert();
+                //result = _tgConn.UpsertData(json);
 
-                //string json = Create_VertexTypeItem_GetJson();
-                //result = _tgConn.UpsertData(json, null);
+                //vert = new Vertex();
+                //vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C01";
+                //vert.VertexType = "ConceptItem";
+                //vert.Attributes.Add("name", "Big cat");
+                //json = vert.ToJsonForSingleVertexUpsert();
+                //result = _tgConn.UpsertData(json);
+
+
 
 
 
@@ -75,13 +129,26 @@ namespace TestHarnes
                 //lst.Add("PhoneCall");
                 //result = _tgConn.GetVertexStats(lst, false);
 
+                //result = _tgConn.DeleteVertices("ConceptItemContent", "id=E3605013-5183-43E3-A57E-52D0F7703C03", "", "", false, 0);
+
                 //result = _tgConn.DeleteVertices("Phone", "phoneNumber=555", "", "", false, 0);
 
                 //result = _tgConn.DeleteVerticesById("PhoneCall", "13188234720138888216071443730737", false, 0);
 
                 //object result = _tgConn.GetVertices("PhoneCall", "callLength", "callLength=0", "1", "", 0);
 
+                //result = _tgConn.GetVertices("Concept");
+
+
+
+
+
+
                 //object result = _tgConn.GetVerticesById("PhoneCall", "15588225488134883643251429541241");
+
+                //long id = 1;
+                //result = _tgConn.GetVerticesById("Concept", id);
+
 
                 //result = _tgConn.GetVertices("PhoneCall", "", "", "5");
 

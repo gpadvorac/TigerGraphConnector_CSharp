@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Xml;
+using TigerGraphComponents;
 using TigerGraphConnector;
 
 namespace TestHarnes
@@ -44,7 +45,7 @@ namespace TestHarnes
                 int gsPort =  int.Parse(ConfigurationManager.AppSettings["GsPort"]);
                 long tokenExpiration = long.Parse(ConfigurationManager.AppSettings["TokenExpiration"]);
                 int lifeTime = int.Parse(ConfigurationManager.AppSettings["LifeTime"]);
-                _tgConn = new TigerGraphConnection(url, restppPort, gsPort, graphName, true, secret, token, tokenExpiration, lifeTime, userName, passWord);
+                _tgConn = new TigerGraphConnection(url, restppPort, gsPort, graphName, true, false, secret, token, tokenExpiration, lifeTime, userName, passWord);
             }
             catch (Exception ex)
             {
@@ -81,10 +82,9 @@ namespace TestHarnes
                 //result = _tgConn.ExecuteGetQuery("personKnowsWho", "source=274");
 
 
-                Dictionary<string, object> parms = new Dictionary<string, object>();
-                parms.Add("usr", 1);
-                parms.Add("rnd", 1);
-                result = _tgConn.RunInstalledQuery("GetVoterRndEvals", parms);
+                //Dictionary<string, object> parms = new Dictionary<string, object>();
+                //parms.Add("inputSponsor", "A43CA257-B5DD-4373-8EFE-07927D294B8A");
+                //result = _tgConn.RunInstalledQuery("GetConcept_BySponsor", parms);
 
                 //Dictionary<string, object> parms = new Dictionary<string, object>();
                 //parms.Add("source", 274);
@@ -93,28 +93,53 @@ namespace TestHarnes
                 //result = _tgConn.GetVer("realtime");
                 //result = _tgConn.GetLicenseInfo();
 
-                //result = GetVertices();
 
-                //result = CreateEdges_GetJson();
-                //result = CreateEdge_GetJson();
-                //result = CreateEdge_NoAttributes_GetJson();
 
-                //EdgeList edges = GetEdges();
-                //result = edges.ToJson(false);
+                // UpsertData - List of Vertices and List of Edges
 
-                //result = Create_VertexTypeItem_GetJson();
-                //result = Create_VertexTypeItem_GetJson_NoAttribute();
+                VertexList list = new VertexList();
+                Vertex vert = new Vertex();
+                string json;
+                vert = new Vertex();
+                vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                vert.VertexType = "ConceptItem";
+                vert.Attributes.Add("name", "Big cat");
+                list.Add(vert);
 
-                //result = CreateAttribute_GetJson();
+                vert = new Vertex();
+                vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C06";
+                vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C01";
+                vert.VertexType = "ConceptItem";
+                vert.Attributes.Add("name", "Big dog");
+                list.Add(vert);
+                json = list.ToJsonForUpsert();
 
-                //string vert = Create_VertexTypeItem_GetJson();
-                //string edg = CreateEdge_GetJson();
-                //result = _tgConn.UpsertData(vert, edg);
 
-                //string query = "select * from USER where id_card_no == 1168196";
-                //result = _tgConn.RunInterpretedQuery(query, "");
+                EdgeList list2 = new EdgeList();
+                string json2;
+                Edge edge = new Edge();
+                edge.FromVertexType = "EvalEvent";
+                edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                edge.EdgeType = "EvalEvent_Has_ConceptItem";
+                edge.ToVertexType = "ConceptItem";
+                edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //edge.Attributes.Add("isChosen", true);
+                list2.Add(edge);
 
-                //Test Comment2
+                edge = new Edge();
+                edge.FromVertexType = "EvalEvent";
+                edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                edge.EdgeType = "EvalEvent_Has_ConceptItem";
+                edge.ToVertexType = "ConceptItem";
+                edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C01";
+                //edge.Attributes.Add("isChosen", true);
+                list2.Add(edge);
+
+                json2 = list2.ToJsonForUpsert();
+
+                string jsonAll = json.Remove(json.Length - 1) + ", " + json2.Remove(0, 1);
+
+                result = _tgConn.UpsertData(jsonAll);
 
                 Console.WriteLine(result.ToString());
                 Debugger.Break();
@@ -129,166 +154,7 @@ namespace TestHarnes
         #region Other Test Methods
 
 
-        static VertexDictionary GetVertices()
-        {
-            VertexDictionary verts = new VertexDictionary();
-            VertexTypeItem vertItem = new VertexTypeItem("Phone", "123", null);
 
-            verts.Add("Phone", vertItem);
-            vertItem = new VertexTypeItem("Phone", "124", null);
-            verts.Add("Phone", vertItem);
-
-            vertItem = new VertexTypeItem("PhoneCall", "123", null);
-
-            verts.Add("PhoneCall", vertItem);
-
-            vertItem = new VertexTypeItem("PhoneCall", "124", null);
-            // Add some attributes to this one.
-            Attr att;
-            att = new Attr("eventDate", "33", "+", Attr.DataType.UINT);
-            vertItem.Attributes.Add(att);
-            att = new Attr("callLength", "120", "+", Attr.DataType.UINT);
-            vertItem.Attributes.Add(att);
-            att = new Attr("callType", "commedy", "+", Attr.DataType.STRING);
-            vertItem.Attributes.Add(att);
-            verts.Add("PhoneCall", vertItem);
-
-            return verts;
-        }
-
-        static string Create_VertexTypeItem_GetJson()
-        {
-            VertexTypeItem vert = new VertexTypeItem("Person", "1235", null);
-
-            Attr att = new Attr("fullName", "Jack Jones", "+", Attr.DataType.STRING);
-            vert.Attributes.Add(att);
-
-            att = new Attr("dob", "200-07-09", "+", Attr.DataType.STRING);
-            vert.Attributes.Add(att);
-
-            att = new Attr("email", "JJ@TG.com", "+", Attr.DataType.STRING);
-            vert.Attributes.Add(att);
-
-            att = new Attr("gender", "Male", "+", Attr.DataType.STRING);
-            vert.Attributes.Add(att);
-
-            att = new Attr("ethic_group", "Orange", "+", Attr.DataType.STRING);
-            vert.Attributes.Add(att);
-
-            string output = "{" + vert.ToJson(false) + "}";
-            return output;
-        }
-
-        static string Create_VertexTypeItem_GetJson_NoAttribute()
-        {
-            VertexTypeItem vert = new VertexTypeItem("Person", "12347", null);
-            string output = "{" + vert.ToJson(false) + "}";
-            return output;
-        }
-
-        static string Create_VertexTypeItem_GetJson_Phone()
-        {
-            VertexTypeItem vert = new VertexTypeItem("Phone", "1234", null);
-
-            string output = "{" + vert.ToJson(false) + "}";
-            return output;
-        }
-
-    
-        static EdgeList GetEdges()
-        {
-            EdgeList edges = new EdgeList();
-            Edge edg = new Edge("Phone", "123", "hasPhoneCall", "PhoneCall", "123", null);
-            Attr att;
-            //att = new Attr("testAtt_Text", "aaaaa", "+", Attr.DataType.STRING);
-            //edg.Attributes.Add(att);
-
-            //att = new Attr("testAtt_INT", "1111", "+", Attr.DataType.INT);
-            //edg.Attributes.Add(att);
-
-            //att = new Attr("testAtt_UINT", "1122", "+", Attr.DataType.UINT);
-            //edg.Attributes.Add(att);
-
-            edges.Add(edg);
-
-            edg = new Edge("Phone", "123", "hasPhoneCall", "PhoneCall", "124", null);
-            //att = new Attr("testAtt_Text", "bbbb", "+", Attr.DataType.STRING);
-            //edg.Attributes.Add(att);
-
-            //att = new Attr("testAtt_INT", "2222", "+", Attr.DataType.INT);
-            //edg.Attributes.Add(att);
-
-            //att = new Attr("testAtt_UINT", "2233", "+", Attr.DataType.UINT);
-            //edg.Attributes.Add(att);
-
-            edges.Add(edg);
-            return edges;
-        }
-
-        static string CreateEdge_GetJson()
-        {
-            Edge edg = new Edge("Phone", "1234", "hasPhoneCall", "PhoneCall", "1234", null);
-
-            Attr att = new Attr("testAtt_Text", "TestVal1", "+", Attr.DataType.STRING);
-            edg.Attributes.Add(att);
-
-            att = new Attr("testAtt_INT", "123456", "+", Attr.DataType.INT);
-            edg.Attributes.Add(att);
-
-            att = new Attr("testAtt_UINT", "654321", "+", Attr.DataType.UINT);
-            edg.Attributes.Add(att);
-
-            string output = "{" + edg.ToJson() + "}";
-            return output;
-        }
-
-        static string CreateEdges_GetJson()
-        {
-            EdgeList list = new EdgeList();
-
-            Edge edg = new Edge("Phone", "15588881022", "hasPhoneCall", "PhoneCall", "15588225488134883643251429541242", null);
-            Attr att = new Attr("testAtt_Text", "TestVal1", "+", Attr.DataType.STRING);
-            edg.Attributes.Add(att);
-
-            att = new Attr("testAtt_INT", "123456", "+", Attr.DataType.INT);
-            edg.Attributes.Add(att);
-
-            att = new Attr("testAtt_UINT", "654321", "+", Attr.DataType.UINT);
-            edg.Attributes.Add(att);
-
-            list.Add(edg);
-
-            edg = new Edge("Phone", "15588881022", "hasPhoneCall", "PhoneCall", "15588225488134883643251429541243", null);
-            att = new Attr("testAtt_Text", "TestVal2", "+", Attr.DataType.STRING);
-            edg.Attributes.Add(att);
-
-            att = new Attr("testAtt_INT", "123457", "+", Attr.DataType.INT);
-            edg.Attributes.Add(att);
-
-            att = new Attr("testAtt_UINT", "654322", "+", Attr.DataType.UINT);
-            edg.Attributes.Add(att);
-
-            list.Add(edg);
-
-            string output = "{" + list.ToJson(false) + "}";
-            return output;
-        }
-
-        static string CreateEdge_NoAttributes_GetJson()
-        {
-            Edge edg = new Edge("Person", "1169534", "hasPhoneCall", "Phone", "15588881022", null);           
-            string output = "{" + edg.ToJson() + "}";
-            return output;
-        }
-
-
-        static string CreateAttribute_GetJson()
-        {
-            AttributeList list = new AttributeList();
-            list.Add(new Attr("name", "Smaug", "+"));
-            list.Add(new Attr("age", 42, "+", Attr.DataType.INT));
-            return list.ToJson();
-        }
 
         /// <summary>
         /// I was looking for a way to get the expiration without updating the token with a new expiration.  Doesn't look like this is possible for now.  

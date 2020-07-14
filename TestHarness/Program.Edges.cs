@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TigerGraphComponents;
 using TigerGraphConnector;
 
 namespace TestHarnes
@@ -15,7 +16,7 @@ namespace TestHarnes
             try
             {
 
-                dynamic result;
+                dynamic result="";
 
                 //result = _tgConn.GetEdgeTypes();
                 //result = _tgConn.GetEdgeType("hasPhoneCall");
@@ -50,9 +51,6 @@ namespace TestHarnes
                 //string json = CreateEdge_NoAttributes_GetJson();
                 //result = _tgConn.UpsertEdge(json);
 
-
-
-                //Upsert Edges
                 // string _Variables_JSON = "{ \"testAtt_Text\" : { \"value\":\"xxx\", \"op\":\"=\"} }";
                 //[("iub_g3", "srs_d_2", {"prop1": "alpha", "prop2": "2019-01-01"})]
 
@@ -64,11 +62,47 @@ namespace TestHarnes
                 ////list.Add(new Tuple<string, string, object>("iub_g3", "srs_d_2", "{ \"prop1\": \"alpha\", \"prop2\": \"2019-01-01\"}"));
                 ////result = _tgConn.UpsertEdges("Phone", "hasPhoneCall", "PhoneCall", list);
 
+                ////// Upsert a single edge
+                //Edge edge = new Edge();
+                //edge.FromVertexType = "EvalEvent";
+                //edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //edge.EdgeType = "EvalEvent_Has_ConceptItem";
+                //edge.ToVertexType = "ConceptItem";
+                //edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //edge.Attributes.Add("isChosen", true);
+                //string json = edge.ToJsonForSingleEdgeUpsert();
+
+                //result = _tgConn.UpsertData(json);
 
 
-                EdgeList edges = GetEdges();
-                string json = edges.ToJson(false);
-                result = _tgConn.UpsertData(null, json);
+
+                //// Upsert a list of edges
+                EdgeList list = new EdgeList();
+                string json;
+                Edge edge = new Edge();
+                edge.FromVertexType = "EvalEvent";
+                edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                edge.EdgeType = "EvalEvent_Has_ConceptItem";
+                edge.ToVertexType = "ConceptItem";
+                edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //edge.Attributes.Add("isChosen", true);
+                //json = edge.ToJsonForSingleEdgeUpsert();
+                list.Add(edge);
+
+                edge = new Edge();
+                edge.FromVertexType = "EvalEvent";
+                edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                edge.EdgeType = "EvalEvent_Has_ConceptItem";
+                edge.ToVertexType = "ConceptItem";
+                edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C01";
+                //edge.Attributes.Add("isChosen", true);
+                list.Add(edge);
+
+                json = list.ToJsonForUpsert();
+                result = _tgConn.UpsertData(json);
+
+
+
 
 
                 //Get Edges
