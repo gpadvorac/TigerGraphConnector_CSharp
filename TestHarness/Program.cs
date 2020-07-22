@@ -95,50 +95,50 @@ namespace TestHarnes
 
 
 
-                // UpsertData - List of Vertices and List of Edges
+                //// UpsertData - List of Vertices and List of Edges
 
-                VertexList list = new VertexList();
-                Vertex vert = new Vertex();
-                string json;
-                vert = new Vertex();
-                vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C00";
-                vert.VertexType = "ConceptItem";
-                vert.Attributes.Add("name", "Big cat");
-                list.Add(vert);
+                //VertexList list = new VertexList();
+                //Vertex vert = new Vertex();
+                //string json;
+                //vert = new Vertex();
+                //vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //vert.VertexType = "ConceptItem";
+                //vert.Attributes.Add("name", "Big cat");
+                //list.Add(vert);
 
-                vert = new Vertex();
-                vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C06";
-                vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C01";
-                vert.VertexType = "ConceptItem";
-                vert.Attributes.Add("name", "Big dog");
-                list.Add(vert);
-                json = list.ToJsonForUpsert();
+                //vert = new Vertex();
+                //vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C06";
+                //vert.Id = "E3605013-5183-43E3-A57E-52D0F7703C01";
+                //vert.VertexType = "ConceptItem";
+                //vert.Attributes.Add("name", "Big dog");
+                //list.Add(vert);
+                //json = list.ToJsonForUpsert();
 
 
-                EdgeList list2 = new EdgeList();
-                string json2;
-                Edge edge = new Edge();
-                edge.FromVertexType = "EvalEvent";
-                edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
-                edge.EdgeType = "EvalEvent_Has_ConceptItem";
-                edge.ToVertexType = "ConceptItem";
-                edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C00";
-                //edge.Attributes.Add("isChosen", true);
-                list2.Add(edge);
+                //EdgeList list2 = new EdgeList();
+                //string json2;
+                //Edge edge = new Edge();
+                //edge.FromVertexType = "EvalEvent";
+                //edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //edge.EdgeType = "EvalEvent_Has_ConceptItem";
+                //edge.ToVertexType = "ConceptItem";
+                //edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                ////edge.Attributes.Add("isChosen", true);
+                //list2.Add(edge);
 
-                edge = new Edge();
-                edge.FromVertexType = "EvalEvent";
-                edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
-                edge.EdgeType = "EvalEvent_Has_ConceptItem";
-                edge.ToVertexType = "ConceptItem";
-                edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C01";
-                //edge.Attributes.Add("isChosen", true);
-                list2.Add(edge);
+                //edge = new Edge();
+                //edge.FromVertexType = "EvalEvent";
+                //edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //edge.EdgeType = "EvalEvent_Has_ConceptItem";
+                //edge.ToVertexType = "ConceptItem";
+                //edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C01";
+                ////edge.Attributes.Add("isChosen", true);
+                //list2.Add(edge);
 
-                json2 = list2.ToJsonForUpsert();
+                //json2 = list2.ToJsonForUpsert();
 
-                string jsonAll = json.Remove(json.Length - 1) + ", " + json2.Remove(0, 1);
-
+                //string jsonAll = json.Remove(json.Length - 1) + ", " + json2.Remove(0, 1);
+                string jsonAll = "{\"vertices\":  {\"ConceptItemContent\": {\"3E26E747-CE82-496B-841D-21DDB8CB5C2A\":{\"title\": {\"value\": \"zzz\"}, \"description\": {\"value\": \"\"}, \"fileType\": {\"value\": \"\"}, \"fileName\": {\"value\": \"Modem1.jpg\"}, \"filePath\": {\"value\": \"\"}, \"sortOrder\": {\"value\": 1}}}}, \"edges\": {\"ConceptItem\": {\"9C4E6C58-4657-464C-B526-0E5EDF0BD643\": {\"ConceptItem_Has_ConceptItemContent\": {\"ConceptItemContent\": {\"3E26E747-CE82-496B-841D-21DDB8CB5C2A\": {}}}}}}}";
                 result = _tgConn.UpsertData(jsonAll);
 
                 Console.WriteLine(result.ToString());

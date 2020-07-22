@@ -63,11 +63,11 @@ namespace TigerGraphComponents
                 {
                     if (sbAtts.Length == 0)
                     {
-                        sbAtts.Append("\"" + att.Key + "\": {\"value\": " + FormatAttributeValue(att.Value) + "}");
+                        sbAtts.Append("\"" + att.Key + "\": {\"value\": " + JsonHelper.FormatAttributeValue(att.Value) + "}");
                     }
                     else
                     {
-                        sbAtts.Append(", \"" + att.Key + "\": {\"value\": " + FormatAttributeValue(att.Value) + "}");
+                        sbAtts.Append(", \"" + att.Key + "\": {\"value\": " + JsonHelper.FormatAttributeValue(att.Value) + "}");
                     }
                 }
                 sb.Append(sbAtts + "}}}");
@@ -76,23 +76,6 @@ namespace TigerGraphComponents
             return sb.ToString();
         }
 
-        object FormatAttributeValue(object val)
-        {
-            object newVal;
-            if (val is string || val is DateTime)// || val is bool)
-            {
-                newVal = "\"" + val + "\"";
-            }
-            else if (val is bool)
-            {
-                newVal = "\"" + val.ToString().ToLower() + "\"";
-            }
-            else
-            {
-                newVal = val;
-            }
-            return newVal;
-        }
     }
 
     public class EdgeList : List<Edge>

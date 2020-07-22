@@ -126,58 +126,58 @@ namespace TigerGraphConnector
         }
 
 
-        /// <summary>
-        /// If vertex is not yet present in graph, it will be created.
-        /// If it's already in the graph, its attributes are updated with the values specified in the request. An optional operator controls how the attributes are updated.
-        /// For valid values of <operator> see: https://docs.tigergraph.com/dev/restpp-api/built-in-endpoints#post-graph-graph_name-upsert-the-given-data
-        /// Returns a single number of accepted (successfully upserted) vertices (0 or 1).
-        /// Endpoint:      POST /graph
-        /// Documentation: https://docs.tigergraph.com/dev/restpp-api/built-in-endpoints#post-graph-graph_name-upsert-the-given-data
-        /// </summary>
-        /// <param name="vertexType"></param>
-        /// <param name="vertexId"></param>
-        /// <param name="_Attributes_Json">The `attributes` argument is expected to be a dictionary in this format:
-        /// {<attribute_name>: <attribute_value>|(<attribute_name>, <operator>), …}
-        /// </param>
-        /// <returns></returns>
-        public dynamic UpsertVertex(string vertexType, string vertexId, string _Attributes_Json)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(vertexId) || string.IsNullOrEmpty(vertexType))
-                {
-                    return "";
-                }
-                else
-                {
-                    string url = _restppUrl + "/graph/" + _graphName;
-                    string data = "{ \"vertices\" : { \"" + vertexType + "\": { \"" + vertexId + "\" : " + _Attributes_Json + " } } }";
-                    Dictionary<string, string> headers = new Dictionary<string, string>();
-                    headers.Add("Accept", "application/json");
-                    return Post(url, AuthMode.Token, headers, data);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw GetException("UpsertVertex", ex);
-            }
-        }
+        ///// <summary>
+        ///// If vertex is not yet present in graph, it will be created.
+        ///// If it's already in the graph, its attributes are updated with the values specified in the request. An optional operator controls how the attributes are updated.
+        ///// For valid values of <operator> see: https://docs.tigergraph.com/dev/restpp-api/built-in-endpoints#post-graph-graph_name-upsert-the-given-data
+        ///// Returns a single number of accepted (successfully upserted) vertices (0 or 1).
+        ///// Endpoint:      POST /graph
+        ///// Documentation: https://docs.tigergraph.com/dev/restpp-api/built-in-endpoints#post-graph-graph_name-upsert-the-given-data
+        ///// </summary>
+        ///// <param name="vertexType"></param>
+        ///// <param name="vertexId"></param>
+        ///// <param name="_Attributes_Json">The `attributes` argument is expected to be a dictionary in this format:
+        ///// {<attribute_name>: <attribute_value>|(<attribute_name>, <operator>), …}
+        ///// </param>
+        ///// <returns></returns>
+        //public dynamic UpsertVertex(string vertexType, string vertexId, string _Attributes_Json)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(vertexId) || string.IsNullOrEmpty(vertexType))
+        //        {
+        //            return "";
+        //        }
+        //        else
+        //        {
+        //            string url = _restppUrl + "/graph/" + _graphName;
+        //            string data = "{ \"vertices\" : { \"" + vertexType + "\": { \"" + vertexId + "\" : " + _Attributes_Json + " } } }";
+        //            Dictionary<string, string> headers = new Dictionary<string, string>();
+        //            headers.Add("Accept", "application/json");
+        //            return Post(url, AuthMode.Token, headers, data);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw GetException("UpsertVertex", ex);
+        //    }
+        //}
 
-        public dynamic UpsertVertex(string vertexJaon)
-        {
-            try
-            {
-                    string url = _restppUrl + "/graph/" + _graphName;
-                    string data = vertexJaon;
-                    Dictionary<string, string> headers = new Dictionary<string, string>();
-                    headers.Add("Accept", "application/json");
-                    return Post(url, AuthMode.Token, headers, data);
-            }
-            catch (Exception ex)
-            {
-                throw GetException("UpsertVertex", ex);
-            }
-        }
+        //public dynamic UpsertVertex(string vertexJaon)
+        //{
+        //    try
+        //    {
+        //            string url = _restppUrl + "/graph/" + _graphName;
+        //            string data = vertexJaon;
+        //            Dictionary<string, string> headers = new Dictionary<string, string>();
+        //            headers.Add("Accept", "application/json");
+        //            return Post(url, AuthMode.Token, headers, data);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw GetException("UpsertVertex", ex);
+        //    }
+        //}
 
         /// <summary>
         /// Retrieves vertices of the given vertex type.

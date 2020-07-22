@@ -70,11 +70,11 @@ namespace TigerGraphComponents
                 {
                     if(sbAtts.Length == 0)
                     {
-                        sbAtts.Append("\"" + att.Key + "\": {\"value\": " + FormatAttributeValue(att.Value) + "}");
+                        sbAtts.Append("\"" + att.Key + "\": {\"value\": " + JsonHelper.FormatAttributeValue(att.Value) + "}");
                     }
                     else
                     {
-                        sbAtts.Append(", \"" + att.Key + "\": {\"value\": " + FormatAttributeValue(att.Value) + "}");
+                        sbAtts.Append(", \"" + att.Key + "\": {\"value\": " + JsonHelper.FormatAttributeValue(att.Value) + "}");
                     }
                 }
                 sb.Append(sbAtts + "}}}");
@@ -97,11 +97,11 @@ namespace TigerGraphComponents
                 {
                     if (sbAtts.Length == 0)
                     {
-                        sbAtts.Append("\"" + att.Key + "\": {\"value\": " + FormatAttributeValue(att.Value) + "}");
+                        sbAtts.Append("\"" + att.Key + "\": {\"value\": " + JsonHelper.FormatAttributeValue(att.Value) + "}");
                     }
                     else
                     {
-                        sbAtts.Append(", \"" + att.Key + "\": {\"value\": " + FormatAttributeValue(att.Value) + "}");
+                        sbAtts.Append(", \"" + att.Key + "\": {\"value\": " + JsonHelper.FormatAttributeValue(att.Value) + "}");
                     }
                 }
                 sb.Append(sbAtts + "}}}");
@@ -113,19 +113,6 @@ namespace TigerGraphComponents
             return JsonConvert.SerializeObject(Attributes);
         }
 
-        object FormatAttributeValue(object val)
-        {
-            object newVal;
-            if(val is string || val is DateTime)
-            {
-                newVal = "\"" + val + "\"";
-            }
-            else
-            {
-                newVal = val;
-            }
-            return newVal;
-        }
 
     }
 

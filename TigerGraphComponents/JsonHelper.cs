@@ -16,6 +16,7 @@ namespace TigerGraphComponents
         {
             try
             {
+                if (jsonString == null) { return null; }
                 JArray jsonObject = (JArray)JsonConvert.DeserializeObject(jsonString);
                 if (jsonObject.Children().Count() == 1)
                 {
@@ -93,6 +94,29 @@ namespace TigerGraphComponents
 
             return new Edge[0];
         }
+
+        public static string FormatAttributeValue(object val)
+        {
+            string newVal;
+            if(val == null)
+            {
+                newVal = "";
+            }
+            else if (val is string || val is DateTime)// || val is bool)
+            {
+                newVal = "\"" + val.ToString() + "\"";
+            }
+            else if (val is bool)
+            {
+                newVal = val.ToString().ToLower();
+            }
+            else
+            {
+                newVal = val.ToString();
+            }
+            return newVal;
+        }
+
 
     }
 }

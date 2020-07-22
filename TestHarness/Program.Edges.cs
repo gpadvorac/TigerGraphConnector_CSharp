@@ -62,45 +62,48 @@ namespace TestHarnes
                 ////list.Add(new Tuple<string, string, object>("iub_g3", "srs_d_2", "{ \"prop1\": \"alpha\", \"prop2\": \"2019-01-01\"}"));
                 ////result = _tgConn.UpsertEdges("Phone", "hasPhoneCall", "PhoneCall", list);
 
-                ////// Upsert a single edge
-                //Edge edge = new Edge();
-                //edge.FromVertexType = "EvalEvent";
-                //edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
-                //edge.EdgeType = "EvalEvent_Has_ConceptItem";
-                //edge.ToVertexType = "ConceptItem";
-                //edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C00";
-                //edge.Attributes.Add("isChosen", true);
-                //string json = edge.ToJsonForSingleEdgeUpsert();
-
-                //result = _tgConn.UpsertData(json);
-
-
-
-
-                //// Upsert a list of edges
-                EdgeList list = new EdgeList();
-                string json;
+                //// Upsert a single edge
                 Edge edge = new Edge();
                 edge.FromVertexType = "EvalEvent";
                 edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
                 edge.EdgeType = "EvalEvent_Has_ConceptItem";
                 edge.ToVertexType = "ConceptItem";
                 edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C00";
-                //edge.Attributes.Add("isChosen", true);
-                //json = edge.ToJsonForSingleEdgeUpsert();
-                list.Add(edge);
+                edge.Attributes.Add("isChosen", false);
+                //string json = edge.ToJsonForSingleEdgeUpsert();
+                //string json = "{\"edges\": {\"EvalEvent\": {\"E3605013-5183-43E3-A57E-52D0F7703C00\": {\"EvalEvent_Has_ConceptItem\": {\"ConceptItem\": {\"E3605013-5183-43E3-A57E-52D0F7703C00\": {\"isChosen\": {\"value\": true}}}}}}}}";
+                string json = "{\"vertices\":  {\"Round\": {\"19658569-875D-4514-9517-23893B4EB17B\":{\"name\": {\"value\": \"Round 1\"}, \"remarks\": {\"value\": \"\"}}}}, \"edges\": {\"Concept\": {\"EA49020B-95CF-4E8F-AA83-A3E2ADCDE3CF\": {\"Concept_Has_Round\": {\"Round\": {\"19658569-875D-4514-9517-23893B4EB17B\": {}}}}}}}";
 
-                edge = new Edge();
-                edge.FromVertexType = "EvalEvent";
-                edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
-                edge.EdgeType = "EvalEvent_Has_ConceptItem";
-                edge.ToVertexType = "ConceptItem";
-                edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C01";
-                //edge.Attributes.Add("isChosen", true);
-                list.Add(edge);
 
-                json = list.ToJsonForUpsert();
                 result = _tgConn.UpsertData(json);
+
+
+
+
+                ////// Upsert a list of edges
+                //EdgeList list = new EdgeList();
+                //string json;
+                //Edge edge = new Edge();
+                //edge.FromVertexType = "EvalEvent";
+                //edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //edge.EdgeType = "EvalEvent_Has_ConceptItem";
+                //edge.ToVertexType = "ConceptItem";
+                //edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                ////edge.Attributes.Add("isChosen", true);
+                ////json = edge.ToJsonForSingleEdgeUpsert();
+                //list.Add(edge);
+
+                //edge = new Edge();
+                //edge.FromVertexType = "EvalEvent";
+                //edge.FromId = "E3605013-5183-43E3-A57E-52D0F7703C00";
+                //edge.EdgeType = "EvalEvent_Has_ConceptItem";
+                //edge.ToVertexType = "ConceptItem";
+                //edge.ToId = "E3605013-5183-43E3-A57E-52D0F7703C01";
+                ////edge.Attributes.Add("isChosen", true);
+                //list.Add(edge);
+
+                //json = list.ToJsonForUpsert();
+                //result = _tgConn.UpsertData(json);
 
 
 

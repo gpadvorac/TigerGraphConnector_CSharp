@@ -354,14 +354,17 @@ namespace TigerGraphConnector
             }
         }
 
+
         /// <summary>
-        /// Upserts data (vertices and edges) from a JSON document or equivalent object structure.
-        /// Endpoint:   POST /graph
-        /// Documentation: https://docs.tigergraph.com/dev/restpp-api/built-in-endpoints#get-the-graph-schema-get-gsql-schema
+        /// Upsdert Json for a single vertex, a list of vertices, and/or a single edge or a list of edges.
+        /// https://docs.tigergraph.com/dev/restpp-api/built-in-endpoints#post-graph-graph_name-upsert-the-given-data
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public dynamic UpsertData(string data, string ack = "all", bool new_vertex_only = false, bool vertex_must_exist = false)
+        /// <param name="json">Fully formatted Json.  No additional formatting will be applied.</param>
+        /// <param name="ack">"all": request will return after all GPE instances have acknowledged the POST.  "none": request will return immediately after RESTPP processed the POST.</param>
+        /// <param name="new_vertex_only">"false": Upsert vertices.  "true": Treat vertices as insert-only. If the input data refers to a vertex which already exists, do not update it.</param>
+        /// <param name="vertex_must_exist">"false": Always insert new edges. If a new edge refers to an endpoint vertex which does not exist, create the necessary vertices, using given id and default values for other parameters.  "true": Only insert or update an edge If both endpoint vertices already exist.</param>
+        /// <returns>String count of upserts</returns>
+        public dynamic UpsertData(string json, string ack = "all", bool new_vertex_only = false, bool vertex_must_exist = false)
         {
             Dictionary<string, string> Header = new Dictionary<string, string>();
             try
@@ -370,7 +373,7 @@ namespace TigerGraphConnector
                 string parms = "ack=" + ack + "& new_vertex_only=" + new_vertex_only.ToString() + "& vertex_must_exist=" + new_vertex_only.ToString();
                 string url = _restppUrl + "/graph/" + _graphName + "?" + parms;
                 Header.Add("Accept", "application/json");
-                dynamic responseContent = Post(url, AuthMode.Token, Header, data, "results", false);
+                dynamic responseContent = Post(url, AuthMode.Token, Header, json, "results", false);
                 JArray values = JArray.Parse(JsonConvert.SerializeObject(responseContent));
                 return values;
             }
